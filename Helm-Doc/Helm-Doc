@@ -12,7 +12,7 @@ How many ways to deply our applications in k8s -:
 # > Helm is a package manager for k8s Applications and it's a collection of k8s manifest files organized in a specific directory structure which will represent some k8s object.
 # > Helm is the package manager for k8s. It allow us to deploy applications on our k8s cluster in a similar manner to you/apt for Linux Distribution.
 # > Helm lets you fetch, deploy and manage the lifecycle of applications, both 3rd party applications(The applications developed and managed by some other org/vendor) and our own applications.
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Why We Need HELM -:
 --------------------------------
@@ -26,7 +26,7 @@ How many ways to deply our applications in k8s -:
 # > Helm it's simplifies the process of creating, managing, and deploying applications using helm charts.
 # > And Helm maintains a versioned history of every chart(application) installation. If something goes wrong, we can call "helm rollback". So that it go backs to the previous version.
 # > Similarly, if we need to upgrade a chart, we can simply call "helm upgrade".
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Helm Chart Concepts -:
 ----------------------------------
@@ -46,7 +46,7 @@ How many ways to deply our applications in k8s -:
 `-- values.yaml                                      # Will define default values which will be referred in template.
 
 > Without modifying teplates(our manifest files) we just play with our values.yml.
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # In Helm we have 3 Concepts -:
 -----------------------------------------
@@ -91,7 +91,7 @@ How many ways to deply our applications in k8s -:
             - name: DATABASE_STORAGE
               value: {{ default "minio" .Values.storage }}
 			  
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # > values (usually defined in a values.yaml file):
 -----------------------------------------------------------
 > imageRegistry: The source registry for the Docker image.
@@ -117,12 +117,12 @@ How many ways to deply our applications in k8s -:
 > helm install <chartname> --set requestscpu=2 --set requestmemory=2Gi
 > We can ingect the values to that yaml files.
 > So it's simplifying the process of managing/ insatlling applications in a k8s Cluster.
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 > Ehen we execute These templates and values go through a template rendering engine, producing a manifest that is easily understandable by k8s.
 
 > Helm Uses the charts to pack all the required k8s components(manifests) for an application to deploy, run and scale.
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #Architecture of Helm -:
 -----------------------------
@@ -134,12 +134,12 @@ How many ways to deply our applications in k8s -:
  #    > Helm Cli connects to Tiller service > Then Tiller service will connect to the API/K8s cluster to deploy our application.( but for tiller we have to create a service account/ role for talk to api)
  
  > 2) Helm 3  (Latest Version of helm) 
- #  > Here we have a helm workstation/helm client that's an one system(developer system) where we install a helm Cli installed(software) > The helm cli(client) can connect to the k8 cluster and deploy the helm chart.
+ # > Here we have a helm workstation/helm client that's an one system(developer system) where we install a helm Cli installed(software) > The helm cli(client) can connect to the k8 cluster and deploy the helm chart.
  # > Here we have another component called helm chart repository. here we maintain helm cahrts/packages. any client can interact with helm repository to pull the helm chart to deploy the application.
  
  > How the helm knows on which k8s cluser the application has to deploy - with help of kube/config file.(the kube context).
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
  > Install Helm3 -:
 ----------------------
@@ -163,7 +163,7 @@ How many ways to deply our applications in k8s -:
 # Validate helm installation by executing the helm command -:
 ----------------------------------------------------------------------------
  > helm  > when we execute the command we can see the helm information.( Available commands, flags & etc).
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Helm Commads -:
 -----------------------
@@ -182,8 +182,8 @@ How many ways to deply our applications in k8s -:
  > helm install stable/metric-serever(chart name) <application name>(anything)     
 
  
- > helm template <chartname>(stable/metric-serever)  - #  we can see the predefined manifestfile which is readily available for deploy the application if you wanna customise something.(change in values.yml)
- > helm show values <chartname>                      - # It'll show the default values which the template is taking.
+ > helm template <chartname>(stable/metric-serever) - # we can see the predefined manifestfile which is readily available for deploy the application if you wanna customise something.(change in values.yml)
+ > helm show values <chartname>                     - # It'll show the default values which the template is taking.
 
 # # If you wanna customise the values while you installing we can use this command -:
 -----------------------------------------------------------------------------------------------------------
