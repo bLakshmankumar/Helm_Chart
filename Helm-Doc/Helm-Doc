@@ -1,0 +1,211 @@
+#                                                                               	HELM - 1
+# 							     	       		    ----------------
+
+How many ways to deply our applications in k8s -:
+---------------------------------------------------------------
+  > K8s Manifest Files that can be Yaml/Json. 
+  > HELM
+---------------------------------------------------------------
+
+# What is Helm -:
+----------------------
+# > Helm is a package manager for k8s Applications and it's a collection of k8s manifest files organized in a specific directory structure which will represent some k8s object.
+# > Helm is the package manager for k8s. It allow us to deploy applications on our k8s cluster in a similar manner to you/apt for Linux Distribution.
+# > Helm lets you fetch, deploy and manage the lifecycle of applications, both 3rd party applications(The applications developed and managed by some other org/vendor) and our own applications.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Why We Need HELM -:
+--------------------------------
+# > Sometimes Managing or deploying k8s applications will be very difficult using all these manifest files.
+# > For ex - If we wanna deploy any application by using manifests we need to create a different objects like deployment,Service,ConfigMaps/Secrets,PVC,IngressRules,HPA and etc.
+# > Each Object we need to create a seperate detailed manifest files manually to deploy the application.
+# > Sometimes it's a very diffficult to manage with all the objects we need to maintain. 
+
+# Here helm comes into the place -:
+---------------------------------------------
+# > Helm it's simplifies the process of creating, managing, and deploying applications using helm charts.
+# > And Helm maintains a versioned history of every chart(application) installation. If something goes wrong, we can call "helm rollback". So that it go backs to the previous version.
+# > Similarly, if we need to upgrade a chart, we can simply call "helm upgrade".
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Helm Chart Concepts -:
+----------------------------------
+> Helm packages are called Charts, and they consist of a few YAML Configuration files and some templates that are rendered into k8s manifest files. 
+
+> Here is the basic directory strusture of charts.
+------------------------------------------------------------
+# > mychart
+|-- Chart.yaml                                       # Meta Data information about charts. Such as name and version, maintainer information, a relevant website, and search keywords.
+|-- charts                                              # Define dependent helm chart names.(If this application is depending on another application we have to mention/reffer that chart name here).
+|-- templates                                        # Will maintain k8's manifest files which is required for our application.
+|   |-- deployment.yml
+|   |-- hpa.yml
+|   |-- serviceAccount.yml
+|   |-- ingress.yaml
+|   `-- service.yaml
+`-- values.yaml                                      # Will define default values which will be referred in template.
+
+> Without modifying teplates(our manifest files) we just play with our values.yml.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# In Helm we have 3 Concepts -:
+-----------------------------------------
+ 1) > Helm Chart -  (It's a package andn it conatains k8s manifests(Templates)).
+ 2) > Helm Repo - (Helm repository It's a central repository where we maintain our halm packages(helm charts).(we can pull the required packages for our applications and deploy our application)
+ 3) > Helm CLI - (with help of HELM CLI we can Install, We can Upgrade and we can Remove the applications in a k8s cluster.
+
+# In Hem Chart we have 2 main components -:
+----------------------------------------------------------
+ 1) > Templates    -: Here we reffer the values from values.yml "{{Deployment_Name}}"
+  
+ 2) > Values file    -: Here we mention the actual values.
+ 
+ Example -: 
+ -------------
+ templates.yml -:
+  --------------------
+ apiVersion: v1
+ kind: ReplicationController
+ metadata:
+  name: deis-database
+  namespace: deis
+  labels:
+    app.kubernetes.io/managed-by: deis
+ spec:
+  replicas: 1
+  selector:
+    app.kubernetes.io/name: deis-database
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: deis-database
+    spec:
+      serviceAccount: deis-database
+      containers:
+        - name: deis-database
+          image: {{ .Values.imageRegistry }}/postgres:{{ .Values.dockerTag }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          ports:
+            - containerPort: 5432
+          env:
+            - name: DATABASE_STORAGE
+              value: {{ default "minio" .Values.storage }}
+			  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# > values (usually defined in a values.yaml file):
+-----------------------------------------------------------
+> imageRegistry: The source registry for the Docker image.
+> dockerTag: The tag for the docker image.
+> pullPolicy: The Kubernetes pull policy.
+> storage: The storage backend, whose default is set to "minio"
+----------------------------------------------------------------------------------
+ 
+> Values file ( values.yaml) -:
+  ---------------------------------
+   imageRegistry: "quay.io/deis"
+   dockerTag: "latest"
+   pullPolicy: "Always"
+   storage: "s3"
+   
+   (or)
+   
+  resources:
+    requestscpu: 1
+	requestsmemory: 1Gi 
+	
+> If you wanna increase or decrease the resources limits then we no need to touch the these yaml files. we can just execute these below commands.
+> helm install <chartname> --set requestscpu=2 --set requestmemory=2Gi
+> We can ingect the values to that yaml files.
+> So it's simplifying the process of managing/ insatlling applications in a k8s Cluster.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> Ehen we execute These templates and values go through a template rendering engine, producing a manifest that is easily understandable by k8s.
+
+> Helm Uses the charts to pack all the required k8s components(manifests) for an application to deploy, run and scale.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Architecture of Helm -:
+-----------------------------
+ > Actually we had a 2 versions of helm Those are 
+ 
+ > 1) Helm 2  (Previous version of helm) > In helm 2 there is a helm component called tiller which will be deployed in the k8s kube-system namespace. Tiller components is removed in helm 3 versions.
+ #    > Here we cant directly deploy our application on k8s cluster bcs we have one component called  tiller in k8s cliuster.
+ #    > Here our helm cli is not able to talk to the k8s server directly. first helm will talk to tiller service which we installed in k8s cluser to deploy our application. 
+ #    > Helm Cli connects to Tiller service > Then Tiller service will connect to the API/K8s cluster to deploy our application.( but for tiller we have to create a service account/ role for talk to api)
+ 
+ > 2) Helm 3  (Latest Version of helm) 
+ #  > Here we have a helm workstation/helm client that's an one system(developer system) where we install a helm Cli installed(software) > The helm cli(client) can connect to the k8 cluster and deploy the helm chart.
+ # > Here we have another component called helm chart repository. here we maintain helm cahrts/packages. any client can interact with helm repository to pull the helm chart to deploy the application.
+ 
+ > How the helm knows on which k8s cluser the application has to deploy - with help of kube/config file.(the kube context).
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ > Install Helm3 -:
+----------------------
+(# Suppose from your jenkins server to talk to the api server/k8s cluster and you wanna isntall hellm chart.)
+
+> Note : The workstation you are running should have the kubectl context set to the cluster we wanna manage with helm. Helm Works inside k8s and uses by default the kubeconfig file ("~/.kube/config").
+
+> We can use another file if we set the environment variable $KUBECONFIG
+ 
+# Now this is my workstation(server) here i wanna deploy my application using helm. so i need a helm software.(helm 3).
+
+# Download The Helm3 Installatioin script -:
+----------------------------------------------------
+ > curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+
+# Add execute permissions to the downloaded script & run.
+-----------------------------------------------------------------------
+ > chmod 700 get_helm.sh
+ > ./get_helm.sh
+
+# Validate helm installation by executing the helm command -:
+----------------------------------------------------------------------------
+ > helm  > when we execute the command we can see the helm information.( Available commands, flags & etc).
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Helm Commads -:
+-----------------------
+> For this ex i'm using application name as a Metric server and chartname as a stable/metric-serever(chart name)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ > helm                                         # To verify the helm installation
+ > helm ls (or) helm ls  --all-namespaces       # To list all the installed applications (namespace).																												        # It'll list the applications which is deployed in the k8s cluster.
+ > helm repo ls         		        # To list the repository details 
+ > helm repo update 			        # For update the Helm repo.
+ > helm repo add <reponame> repoUrl(public)     # To create a public repository
+ > helm search repo <reponame>  	        # To search the repository.
+ > helm search repo <reponame> | grep "metrics"	# To search a specific resource in a repo manifest.
+ 
+ # For install the application -:
+ -------------------------------------
+ > helm install stable/metric-serever(chart name) <application name>(anything)     
+
+ 
+ > helm template <chartname>(stable/metric-serever)  - #  we can see the predefined manifestfile which is readily available for deploy the application if you wanna customise something.(change in values.yml)
+ > helm show values <chartname>                      - # It'll show the default values which the template is taking.
+
+# # If you wanna customise the values while you installing we can use this command -:
+-----------------------------------------------------------------------------------------------------------
+ > helm install <chartname> <application name>(anything) -n kube-system --set readinessProbe.initialDelaySeconds=40 
+
+# So that all chart details will copy to this file then we can edit/modify the values. then while insatlling we can use that newfilename with main(old)file -:
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ > helm show values stable/metric-serever <chartname>  >> <newfilename>(metric_value.yml)                                         
+
+# # So my chart file will take the values from my newfile(metric_value.yml) to deploy my application -:
+-------------------------------------------------------------------------------------------------------------------------------
+ > hellm install helm install <application name>(anything) stable/metric-serever(chart name) -n kube-system -f  <newfilename>(metric_value.yml) 
+ 
+ > kubectl get serviceaccount  -n namespace               -   # we can see the service account details.
+ > kubectl top pods                                       -   # We can watch the pods.
+ 
+ # If we update the values in the file then we use this command to update the deployment. it'll upgrade to new version -:
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ > helm upgrade <application name>(which we have) stable/metric-serever(chart name) -f metric_value.yml -n kube-system 
+ 
+ # If something wrong with your new version use this command to rollback to previous version. but it shows the revision 3 -:
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------
+ > helm rollback release name<application name> (if ns is there mention the ns)                                                                   
+ 
+ > helm remove <Application Name>  (if ns is there mention the ns) -  # If you wanna remove that application use this command.
