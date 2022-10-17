@@ -50,7 +50,7 @@ How many ways to deply our applications in k8s -:
 
 # In Helm we have 3 Concepts -:
 -----------------------------------------
- 1) > Helm Chart -  (It's a package andn it conatains k8s manifests(Templates)).
+ 1) > Helm Chart -  (It's a package, and it conatains k8s manifests(Templates)).
  2) > Helm Repo - (Helm repository It's a central repository where we maintain our halm packages(helm charts).(we can pull the required packages for our applications and deploy our application)
  3) > Helm CLI - (with help of HELM CLI we can Install, We can Upgrade and we can Remove the applications in a k8s cluster.
 
