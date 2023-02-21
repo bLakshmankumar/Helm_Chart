@@ -84,9 +84,96 @@ Available Commands:
                               
     # helm package    -: helm package is basically packaging our chart directory into a chart archive.
                          Ex -: For example now we have a charts folder & if you wanna store this chart folder in any repository like Jfrog, nexus, s3 & etc to store our charts.
-                               > helm package chartname(test)  > It'll create a .tgz file & we can pushed to any repo.
-                               >
+                               > helm package chartname(test)                         > It'll create a .tgz file & we can pushed to any repo.(with some random version)
+                               > helm package chart-name(test) --destination /home/   > It'll create a .tgz file & placed in that destination dorectory.
+                               > helm package chart-name(test) --destination /home/ --version 1.2.3 > It'll craeet a .tgz with a specific version (1.2.3.tgz)
+                               
+                               
+    # helm Plugin     -: Helm plugin is basically ntg related to our charts, releases. It's related to install plugins.
+                         EX-: 
+                          > helm plugin install url-of-plugin -: It'll install the plugin for ex -: helm diff plugin we can check the differnces b/w the helm files.
+                          > helm plugin update diff(plugin name) -: It'll try to download the latest-one & update.
+                          > helm plugin list     -: It'll list the plugins
+                          > helm plugin uninstall diff(plugin-name) -: It'll uninstall the plugin.
+                          
+     # helm pull       -: It'll download a chart from a repository & (optionally) unpack it in local directory.
+                          Simply it'll pull the charts from the repo.
+                          It works like a docker pull to download the image.
+                          Ex -:
+                          ----
+                            > helm pull airflow --version 6.2.0 --repo https://hub.com/charts   > That particular chart will be download into local.
+                            > ls   > we can see the airflow-6.2.0.tgz
+                            > helm pull airflow --version 6.2.0 --repo https://hub/com/charts  --untar > That particular chart will be download into local and untar the chart.
+                            
+      # helm repo        -: By using this command we can add the chart repository & we can use that chart repositories.
+                           Ex -:
+                           ------
+                           > helm repo list
+                           > helm repo add repo1 repourl(https://helm/repo).
+                           > helm repo list 
+                           > helm repo update   > After adding the repo we need to do an update, bcs after update only that perticular repo will be readable by helm.
+                           > helm install deploy2(unique-name) repo1/test(chartname) --version 3.1.0-2
+                           >                               (or) 
+                           > helm pull repo1/test(chart-name) --version 3.1.0-2 (here we no need to provide any name)
+                           
+                   Note -: 
+                   -------
+                           > before do the helm install do the helm update first.
+                           > helm repo remove reponame  > if you wanna remove the repo.
+                        
+      # helm rollback -: This command rolls back a release to a previous revision. The first argument of the rollback command is the name of a release,
+                         and the second is a revision (version) number. If this argument is omitted, it will roll back to the previous release. 
+                         To see revision numbers, run 'helm history RELEASE-name
+                         > helm list (or) helm list -n helm-releases > it'll print the release list.
+                         > helm history release-name (for ex- we have 1 release here)
                          
+                         # create a new release -:
+                         -------------------------
+                         > helm upgrade release-name(release2) chart-name(test)
+                         > helm list    (now we have a 2 releases).
+                         > For ex we have an issue with new revision so i wanna rollback to previous version 
+                         
+                         > (How can we do roll-back)
+                            ------------------------
+                              > helm rolllback release-name  1 > (revision value).
+                              > helm list   ( Now it will roll back to previous version 1 but show the revision num 3 bcs it'll take the incremental count)
+                              > helm history release-name   > we can see the rollback to 1 status on last.
+                              
+        # helm search  -: if you wanna search wether our required charts are availble or not we can use this. if the chart is not available here we need to develop.
+                          Actually we have two commands here -:
+                            > helm search hub nginx   > it'll search the nginx on hub.helm.sh site
+                            > helm search repo nginx  > It'll search the nginx on a perticular repositories. it'll give the repo links , we can get the info from there.
+                            > helm search repo nginx --devel   > It'll show the alpha stage, beta stage of nginx.
+                            
+         # helm show    -: show information of a chart. 
+                          > helm show all test(chart-name)   > It'll list all the yamls values.
+                          > helm show chart test(chart-name) > It'll give chart definition(metadata about chart).
+                          > helm show values test(chart-name) > It'll give the information about that perticular chart's values.
+                          
+         # helm status   -: It'll display the status of the named releases.
+                            > helm status release-name   (it'll show the status of that release like when it was deployed , on which ns it was deployed & etc).
+                            > helm status release-name -o json (it'll show the status on json format)
+                            
+         # helm template  -: locally rendere templates.
+                          
+         # helm test      -: run tests for a release
+                             > helm test release-name  > it'll verify the release health check, if it's succeed we can go for deploy.
+                             > It's used for do the test for our release.
+                             > helm uninstall release-name   > It'll uninstall the release.
+                              
+          # helm verify    -: verify that a chart at the given path has been signed and is valid.
+                              > For example we pull down so many charts so i wanna verify a perticular chart
+                              > helm verify chart-name
+                              
+          # helm version   -: Print the client versioin information.
+                              
+          
+                           
+         
+                         
+                        
+ 
+    
                          
                      
                               
