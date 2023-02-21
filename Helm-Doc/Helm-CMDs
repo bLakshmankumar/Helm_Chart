@@ -48,3 +48,4 @@ Available Commands:
                        Ex -: helm env    > (It gives all the pods related client information)
                        > Like what all are the variables we set & where is our repositories which we used. all those things will be here.
               
+ # helm get         -: This command is used to download the extended infromation about the named releases.
