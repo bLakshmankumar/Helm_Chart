@@ -32,6 +32,9 @@ Available Commands:
 # helm create     -: This command will create a chart directory along with commonfiles & directories used in charts(like templet dir, values.yml, charts.yml & etc).
                       Ex -: helm create test(it'll create a test directory inside this directory we can see the values.yml, templete dir &etc)
                       
+# helm list        -: It'll list the all releases 
+                      Ex -: helm list -n helm  > it'll list all releases info on specific name-space.
+                      re
 # helm dependency  -: This command is used for managing dependencies in helm & helm dependencies store under charts folder.
                       And if you have any dependencies let's go to charts folder & open chart.yml & provide your dependencies under appversion.
                       EX-:
@@ -49,3 +52,46 @@ Available Commands:
                        > Like what all are the variables we set & where is our repositories which we used. all those things will be here.
               
  # helm get         -: This command is used to download the extended infromation about the named releases.
+                       Ex-: Helm install deploy1(any-name) chartname(test) 
+                            > we deployed some chart on k8s cluster.
+                            > My app successfully deployed in k8s cluster.
+                            > kubectl get all > we can able to see running pods.
+                            > Now we can able to get information about my helm releases.
+                         
+                        >> helm get all deploy  > it'll give all the info about api-version, kind, basically downloading our releases(all info it'll give).
+                        
+                        > helm get manifest (it'll download the manifest files)
+                        
+                        > helm get notes chartname (it'll list the release of chart).
+                         
+                        > helm get values chartname(test) > (It'll list the user defined values).
+                        
+                        > helm get values chartname(test) -a > (It'll list all default values as well).
+                        
+  
+  # helm history    -: It'll fetch the release history 
+                       EX -: > helm history chart-name(test)
+                             > helm history chart-name(test) --max1 > it'll list last history only.
+                             
+                             
+  # helm install    -: It'll install a chart 
+                       Ex-: helm install deploy1 chartname(test)  > ls  > we can see the release.
+                            helm install deploy1 artifactory-055 --version 2.2.2(specify the version) --repo repo-url(https://charts.jfrog.io) > it'll deploy the specific version only.
+                            
+   # helm lint       -: It'll verify the format of all yamls in a chart.
+                        Ex -: helm lint chart-name (test).
+                              helm lint chart-name (test) --strict    > if you wanna find any warning lint fail we can use this).
+                              
+    # helm package    -: helm package is basically packaging our chart directory into a chart archive.
+                         Ex -: For example now we have a charts folder & if you wanna store this chart folder in any repository like Jfrog, nexus, s3 & etc to store our charts.
+                               > helm package chartname(test)  > It'll create a .tgz file & we can pushed to any repo.
+                               >
+                         
+                         
+                     
+                              
+                        
+    
+                       
+                       
+                     
