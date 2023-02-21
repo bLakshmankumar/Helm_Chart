@@ -25,7 +25,26 @@ Available Commands:
   upgrade     upgrade a release
   verify      verify that a chart at the given path has been signed and is valid
   version     print the client version information
-============================================================================================================================================================
+====================================================================================================================================================================
 # helm completion -: This command will generates auto generation scripts to make our helm commands as shortcuts.
                      Ex -: source < (helm completion bash) > now helm list command will become a helm ls.
-                   
+             
+# helm create     -: This command will create a chart directory along with commonfiles & directories used in charts(like templet dir, values.yml, charts.yml & etc).
+                      Ex -: helm create test(it'll create a test directory inside this directory we can see the values.yml, templete dir &etc)
+                      
+# helm dependency  -: This command is used for managing dependencies in helm & helm dependencies store under charts folder.
+                      And if you have any dependencies let's go to charts folder & open chart.yml & provide your dependencies under appversion.
+                      EX-:
+                      ---- 
+                         dependencies: 
+                         - name: appmesh-controller                          (name of the chart)
+                           version: "0.5.0"                                  (version what i want)
+                           repository: "https://aws.github.io/aks-charts"    (where this chart is located)
+                      -----------------------------------------------------------------------------------------------------------------
+                      > helm dep list test
+                      > helm dependency update test  > it'll upgrade the charts folder (charts.yaml)
+                      
+ # helm repo        -: This command used for helm client environment information.
+                       Ex -: helm env    > (It gives all the pods related client information)
+                       > Like what all are the variables we set & where is our repositories which we used. all those things will be here.
+              
