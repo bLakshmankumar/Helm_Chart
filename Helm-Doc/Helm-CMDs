@@ -26,16 +26,16 @@ Available Commands:
   verify      verify that a chart at the given path has been signed and is valid
   version     print the client version information
 ====================================================================================================================================================================
-# helm completion -: This command will generates auto generation scripts to make our helm commands as shortcuts.
+  # helm completion -: This command will generates auto generation scripts to make our helm commands as shortcuts.
                      Ex -: source < (helm completion bash) > now helm list command will become a helm ls.
              
-# helm create     -: This command will create a chart directory along with commonfiles & directories used in charts(like templet dir, values.yml, charts.yml & etc).
+  # helm create     -: This command will create a chart directory along with commonfiles & directories used in charts(like templet dir, values.yml, charts.yml & etc).
                       Ex -: helm create test(it'll create a test directory inside this directory we can see the values.yml, templete dir &etc)
                       
-# helm list        -: It'll list the all releases 
+  # helm list        -: It'll list the all releases 
                       Ex -: helm list -n helm  > it'll list all releases info on specific name-space.
                       re
-# helm dependency  -: This command is used for managing dependencies in helm & helm dependencies store under charts folder.
+  # helm dependency  -: This command is used for managing dependencies in helm & helm dependencies store under charts folder.
                       And if you have any dependencies let's go to charts folder & open chart.yml & provide your dependencies under appversion.
                       EX-:
                       ---- 
@@ -47,11 +47,11 @@ Available Commands:
                       > helm dep list test
                       > helm dependency update test  > it'll upgrade the charts folder (charts.yaml)
                       
- # helm repo        -: This command used for helm client environment information.
+   # helm repo        -: This command used for helm client environment information.
                        Ex -: helm env    > (It gives all the pods related client information)
                        > Like what all are the variables we set & where is our repositories which we used. all those things will be here.
               
- # helm get         -: This command is used to download the extended infromation about the named releases.
+   # helm get         -: This command is used to download the extended infromation about the named releases.
                        Ex-: Helm install deploy1(any-name) chartname(test) 
                             > we deployed some chart on k8s cluster.
                             > My app successfully deployed in k8s cluster.
@@ -69,16 +69,16 @@ Available Commands:
                         > helm get values chartname(test) -a > (It'll list all default values as well).
                         
   
-  # helm history    -: It'll fetch the release history 
+    # helm history    -: It'll fetch the release history 
                        EX -: > helm history chart-name(test)
                              > helm history chart-name(test) --max1 > it'll list last history only.
                              
                              
-  # helm install    -: It'll install a chart 
+    # helm install    -: It'll install a chart 
                        Ex-: helm install deploy1 chartname(test)  > ls  > we can see the release.
                             helm install deploy1 artifactory-055 --version 2.2.2(specify the version) --repo repo-url(https://charts.jfrog.io) > it'll deploy the specific version only.
                             
-   # helm lint       -: It'll verify the format of all yamls in a chart.
+    # helm lint       -: It'll verify the format of all yamls in a chart.
                         Ex -: helm lint chart-name (test).
                               helm lint chart-name (test) --strict    > if you wanna find any warning lint fail we can use this).
                               
@@ -105,7 +105,7 @@ Available Commands:
                             > ls   > we can see the airflow-6.2.0.tgz
                             > helm pull airflow --version 6.2.0 --repo https://hub/com/charts  --untar > That particular chart will be download into local and untar the chart.
                             
-      # helm repo        -: By using this command we can add the chart repository & we can use that chart repositories.
+     # helm repo        -: By using this command we can add the chart repository & we can use that chart repositories.
                            Ex -:
                            ------
                            > helm repo list
@@ -121,7 +121,7 @@ Available Commands:
                            > before do the helm install do the helm update first.
                            > helm repo remove reponame  > if you wanna remove the repo.
                         
-      # helm rollback -: This command rolls back a release to a previous revision. The first argument of the rollback command is the name of a release,
+     # helm rollback -: This command rolls back a release to a previous revision. The first argument of the rollback command is the name of a release,
                          and the second is a revision (version) number. If this argument is omitted, it will roll back to the previous release. 
                          To see revision numbers, run 'helm history RELEASE-name
                          > helm list (or) helm list -n helm-releases > it'll print the release list.
@@ -139,18 +139,18 @@ Available Commands:
                               > helm list   ( Now it will roll back to previous version 1 but show the revision num 3 bcs it'll take the incremental count)
                               > helm history release-name   > we can see the rollback to 1 status on last.
                               
-        # helm search  -: if you wanna search wether our required charts are availble or not we can use this. if the chart is not available here we need to develop.
+     # helm search  -: if you wanna search wether our required charts are availble or not we can use this. if the chart is not available here we need to develop.
                           Actually we have two commands here -:
                             > helm search hub nginx   > it'll search the nginx on hub.helm.sh site
                             > helm search repo nginx  > It'll search the nginx on a perticular repositories. it'll give the repo links , we can get the info from there.
                             > helm search repo nginx --devel   > It'll show the alpha stage, beta stage of nginx.
                             
-         # helm show    -: show information of a chart. 
+     # helm show    -: show information of a chart. 
                           > helm show all test(chart-name)   > It'll list all the yamls values.
                           > helm show chart test(chart-name) > It'll give chart definition(metadata about chart).
                           > helm show values test(chart-name) > It'll give the information about that perticular chart's values.
                           
-         # helm status   -: It'll display the status of the named releases.
+     # helm status   -: It'll display the status of the named releases.
                             > helm status release-name   (it'll show the status of that release like when it was deployed , on which ns it was deployed & etc).
                             > helm status release-name -o json (it'll show the status on json format)
                             
@@ -161,8 +161,14 @@ Available Commands:
                              > It's used for do the test for our release.
                              > helm uninstall release-name   > It'll uninstall the release.
                               
-          # helm verify    -: verify that a chart at the given path has been signed and is valid.
+     # helm verify    -: verify that a chart at the given path has been signed and is valid.
                               > For example we pull down so many charts so i wanna verify a perticular chart
                               > helm verify chart-name
                               
           # helm version   -: Print the client versioin information.
+          
+          
+          
+          
+          
+          
