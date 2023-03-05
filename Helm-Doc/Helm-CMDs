@@ -165,7 +165,7 @@ Available Commands:
                               > For example we pull down so many charts so i wanna verify a perticular chart
                               > helm verify chart-name
                               
-          # helm version   -: Print the client versioin information.
+     # helm version   -: Print the client versioin information.
           
           
           
